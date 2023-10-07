@@ -1,6 +1,5 @@
+import java.util.Arrays;
 import java.util.Random;
-import java.util.Vector;
-import java.util.Enumeration;
 
 public class NetworkSimulator
 {    
@@ -32,22 +31,22 @@ public class NetworkSimulator
         time = 0.0;
         
         cost = new int[NUMENTITIES][NUMENTITIES];
-        cost[0][0] = Costs.costs[0][0];
-        cost[0][1] = Costs.costs[0][1];
-        cost[0][2] = Costs.costs[0][2];
-        cost[0][3] = Costs.costs[0][3];
-        cost[1][0] = Costs.costs[1][0];
-        cost[1][1] = Costs.costs[1][1];
-        cost[1][2] = Costs.costs[1][2];
-        cost[1][3] = Costs.costs[1][3];
-        cost[2][0] = Costs.costs[2][0];
-        cost[2][1] = Costs.costs[2][1];
-        cost[2][2] = Costs.costs[2][2];
-        cost[2][3] = Costs.costs[2][3];
-        cost[3][0] = Costs.costs[3][0];
-        cost[3][1] = Costs.costs[3][1];
-        cost[3][2] = Costs.costs[3][2];
-        cost[3][3] = Costs.costs[3][3];
+        cost[0][0] = Costs.initialCosts[0][0];
+        cost[0][1] = Costs.initialCosts[0][1];
+        cost[0][2] = Costs.initialCosts[0][2];
+        cost[0][3] = Costs.initialCosts[0][3];
+        cost[1][0] = Costs.initialCosts[1][0];
+        cost[1][1] = Costs.initialCosts[1][1];
+        cost[1][2] = Costs.initialCosts[1][2];
+        cost[1][3] = Costs.initialCosts[1][3];
+        cost[2][0] = Costs.initialCosts[2][0];
+        cost[2][1] = Costs.initialCosts[2][1];
+        cost[2][2] = Costs.initialCosts[2][2];
+        cost[2][3] = Costs.initialCosts[2][3];
+        cost[3][0] = Costs.initialCosts[3][0];
+        cost[3][1] = Costs.initialCosts[3][1];
+        cost[3][2] = Costs.initialCosts[3][2];
+        cost[3][3] = Costs.initialCosts[3][3];
 
         entity = new Entity[NUMENTITIES];
         entity[0] = new Entity0();
@@ -138,7 +137,10 @@ public class NetworkSimulator
                 System.out.println("main(): Panic.  Unknown event type.");
             }    
         }
-        
+
+        for (Entity e : entity) {
+            System.out.println(e.currentNode + ": " + Arrays.toString(e.getDistanceVector()));
+        }
         System.out.println("Simulator terminated at t=" + time +
                            ", no packets in medium.");        
     }

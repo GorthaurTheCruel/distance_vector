@@ -3,6 +3,13 @@ public class Entity2 extends Entity
     // Perform any necessary initialization in the constructor
     public Entity2()
     {
+        currentNode = 2;
+        neighbors = new int[] { 0, 1, 3 };
+
+        preInitDistanceTable();
+        initializeKnownCosts();
+        distanceVector = getDistanceVector();
+        sendUpdateToAllNeighbors();
     }
     
     // Handle updates when a packet is received.  Students will need to call
@@ -12,6 +19,17 @@ public class Entity2 extends Entity
     // details.
     public void update(Packet p)
     {
+        int senderNode = p.getSource();
+        for (int i = 0; i < distanceTable.length ; i++) {
+            int[] distancesToNodeViaAll = distanceTable[i];
+            distancesToNodeViaAll[senderNode] = distanceTable[senderNode][currentNode] + p.getMincost(i);
+        }
+
+        int[] newDistanceVector = getDistanceVector();
+        if (hasCostChanged(distanceVector, newDistanceVector)) {
+            distanceVector = newDistanceVector;
+            sendUpdateToAllNeighbors();
+        }
     }
     
     public void linkCostChangeHandler(int whichLink, int newCost)
