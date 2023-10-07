@@ -75,4 +75,38 @@ public abstract class Entity
         }
     }
 
+    // Checks if the distance vector has changed, and if so calls the method to push this change to its neighbors
+    protected void checkForDistanceVectorUpdates() {
+        int[] newDistanceVector = getDistanceVector();
+        if (hasCostChanged(distanceVector, newDistanceVector)) {
+            distanceVector = newDistanceVector;
+            sendUpdateToAllNeighbors();
+        }
+    }
+
+    // For an incoming packet, update the distance table column for that packet source
+    protected void processIncomingDistanceVectors(Packet p) {
+        int senderNode = p.getSource();
+        for (int i = 0; i < distanceTable.length ; i++) {
+            int[] distancesToNodeViaAll = distanceTable[i];
+            distancesToNodeViaAll[senderNode] = distanceTable[senderNode][currentNode] + p.getMincost(i);
+        }
+
+        checkForDistanceVectorUpdates();
+    }
+
+    // Respond to a link cost change by updating the distance table
+    protected void processLinkCostChanges(int whichLink, int newCost) {
+        int previousCost = distanceTable[whichLink][currentNode];
+        // Update distance vector cost from current node to updated neighbor
+        distanceTable[whichLink][currentNode] = newCost;
+
+        int diff = newCost - previousCost;
+        // Update distance vector cost to all nodes via updated neighbor
+        for (int[] distanceToNodeViaAll : distanceTable) {
+            distanceToNodeViaAll[whichLink] = distanceToNodeViaAll[whichLink] + diff;
+        }
+
+        checkForDistanceVectorUpdates();
+    }
 }
