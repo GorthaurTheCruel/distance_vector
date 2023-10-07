@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Random;
 
 public class NetworkSimulator
@@ -138,9 +137,6 @@ public class NetworkSimulator
             }    
         }
 
-        for (Entity e : entity) {
-            System.out.println(e.currentNode + ": " + Arrays.toString(e.getDistanceVector()));
-        }
         System.out.println("Simulator terminated at t=" + time +
                            ", no packets in medium.");        
     }

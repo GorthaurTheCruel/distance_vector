@@ -19,21 +19,12 @@ public class Entity0 extends Entity
     // details.
     public void update(Packet p)
     {
-        int senderNode = p.getSource();
-        for (int i = 0; i < distanceTable.length ; i++) {
-            int[] distancesToNodeViaAll = distanceTable[i];
-            distancesToNodeViaAll[senderNode] = distanceTable[senderNode][currentNode] + p.getMincost(i);
-        }
-
-        int[] newDistanceVector = getDistanceVector();
-        if (hasCostChanged(distanceVector, newDistanceVector)) {
-            distanceVector = newDistanceVector;
-            sendUpdateToAllNeighbors();
-        }
+        processIncomingDistanceVectors(p);
     }
-    
+
     public void linkCostChangeHandler(int whichLink, int newCost)
     {
+        processLinkCostChanges(whichLink, newCost);
     }
     
     public void printDT()
